@@ -3,7 +3,7 @@ module.exports = function(router, io) {
 	var fs = require('fs');
 	var obj= [];
 
-	io.on('connection', function(client){
+	io.sockets.on('connection', function(client){
 	  console.log('Client connected!');
 	  
 	  // get data from file

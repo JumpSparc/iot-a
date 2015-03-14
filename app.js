@@ -13,7 +13,7 @@ var users        = require('./routes/users');
 
 // socket 
 var server       = require('http').createServer(app);
-var io           = require('socket.io')(server);
+var io           = require('socket.io').listen(server);
 
 
 
@@ -65,7 +65,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-server.listen(process.env.PORT, function(){
+server.listen(process.env.PORT || 3000, function(){
   console.log('Server start.');
 });
 // module.exports = app;

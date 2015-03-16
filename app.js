@@ -13,7 +13,7 @@ var users        = require('./routes/users');
 
 // socket 
 var server       = require('http').createServer(app);
-var io           = require('socket.io').listen(server);
+var io           = require('socket.io')(server);
 
 
 
@@ -23,8 +23,7 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

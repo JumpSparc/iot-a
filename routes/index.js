@@ -36,8 +36,9 @@ module.exports = function(router, io) {
 	});
 
 
-	router.post('/push', function(req, res, next) {
+	router.get('/push', function(req, res, next) {
 		console.log('push data!'); 
+		console.log(req.query); 
 		obj.push(req.body);
 		
 		// update

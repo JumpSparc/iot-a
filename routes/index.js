@@ -38,8 +38,8 @@ module.exports = function(router, io) {
 
 	router.get('/push', function(req, res, next) {
 		console.log('push data!'); 
-		console.log(req.query); 
-		obj.push(req.body);
+		// console.log(req.query); 
+		obj.push(req.query);
 		
 		// update
 		updateFile(obj);

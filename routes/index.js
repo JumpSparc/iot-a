@@ -47,13 +47,14 @@ module.exports = function(router, io) {
 	})
 	.get('/get_time', function(req, res, next) {
 		var currentdate = new Date(); 
-		var datetime = currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
+		var monnth = ((currentdate.getMonth()+1 ) < 10 ) ? '0' + (currentdate.getMonth()+1 ) :  (currentdate.getMonth()+1 );
+		var datetime = currentdate.getFullYear() + "-"  
+                + monnth  + "-"  
+								+ currentdate.getDate() + " "
                 + currentdate.getHours() + ":"  
                 + currentdate.getMinutes() + ":" 
                 + currentdate.getSeconds();
-		res.json(currentdate);
+		res.json(datetime);
 	})
 
 	; 

@@ -1,7 +1,8 @@
 <html ng-app="SolarProject">
 <head>
 	<title></title>
-	<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/angular-chart.js/dist/angular-chart.css">
 </head>
 
 <body>
@@ -11,6 +12,10 @@
 
 	<div class="container">
 			<div class="header" ng-controller="LogsController as logs">			
+				<canvas id="line" class="chart chart-line" data="data"
+				  labels="labels" legend="true" series="series"
+				  click="onClick">
+				</canvas> 
 				<ul>
 					<li ng-repeat="log in data">
 						<pre>{{log}}</pre>
@@ -18,7 +23,7 @@
 				</ul>
 			</div> 
 
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+		<!-- <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 			
 		<hr>
 
@@ -38,13 +43,17 @@
 
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</form>
-		</div>
+		</div> -->
 	</div>
 
 	
+	<script src="/angular/angular.min.js"></script>
+	<script src="/angular/angular-route.min.js"></script>
+	<script src="/jquery/dist/jquery.min.js"></script>
+	<script src="/Chart.js/Chart.min.js"></script>
+	<script src="/angular-chart.js/dist/angular-chart.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
-	<script src="/javascripts/angular.min.js"></script>
-	<script src="/javascripts/angular-route.min.js"></script>
+	<script src="/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="/javascripts/angularApp.js"></script>
 	<script src="/javascripts/index/socket-factory.js"></script>
 	<script src="/javascripts/index/index-controller.js"></script>

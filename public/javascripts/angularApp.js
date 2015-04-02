@@ -1,3 +1,3 @@
 (function() {
-	angular.module('SolarProject', ['ngRoute']); 
+	angular.module('SolarProject', ["ngRoute", "chart.js"]); 
 })();

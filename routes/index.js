@@ -33,10 +33,9 @@ module.exports = function(router, io) {
 	/* GET home page. */
 	router.get('/', function(req, res, next) {
 	  res.render('index');
-	});
+	})
+	.get('/push', function(req, res, next) {
 
-
-	router.get('/push', function(req, res, next) {
 		console.log('push data!'); 
 		// console.log(req.query); 
 		obj.push(req.query);
@@ -45,7 +44,19 @@ module.exports = function(router, io) {
 		updateFile(obj);
 		io.sockets.emit('data', obj);
 		res.json("Success");
-	}); 
+	})
+	.get('/get_time', function(req, res, next) {
+		var currentdate = new Date(); 
+		var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+		res.json(currentdate);
+	})
+
+	; 
 
 	function updateFile(data){
 		fs.writeFile('./public/logs.json',JSON.stringify(data) , function(err) {

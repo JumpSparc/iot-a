@@ -9,7 +9,7 @@ angular.module('SolarProject')
 	  $scope.series = ['Power'];
 	  $scope.data = [power];
 	  $scope.options = {
-	  	animation: false;
+	  	animation: false
 	  };
 		$scope.$apply();
 	});

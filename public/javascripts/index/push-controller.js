@@ -3,7 +3,7 @@ angular.module('SolarProject')
 	$scope.log = {};
 	
 	$scope.pushLog = function(log){
-		// semnd to server
+		// send to server
 		socket.emit('data',log);
 		// reset form
 		$scope.log = {};

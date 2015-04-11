@@ -29,6 +29,7 @@ angular.module('SolarProject')
             clipEdge: false,
             duration: 0,
             useInteractiveGuideline: true,
+            yDomain: [0,15000],
             xAxis: {
                 showMaxMin: false,
                 tickFormat: function(d) {
@@ -47,7 +48,7 @@ angular.module('SolarProject')
     $scope.data = [
         {
             "key" : "Power" ,
-            "values" : obj.slice(Math.max(obj.length - 500, 1))
+            "values" : obj
         }
 
     ];

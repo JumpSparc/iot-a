@@ -15,6 +15,18 @@ var users        = require('./routes/users');
 var server       = require('http').createServer(app);
 var io           = require('socket.io')(server);
 
+// db
+var mongoose     = require('mongoose');
+var Log          = require('./models/log.js');
+
+// connect to db
+mongoose.connect('mongodb://localhost/solar');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function (callback) {
+  // yay!
+  console.log('connected to db!');
+});
 
 
 // view engine setup

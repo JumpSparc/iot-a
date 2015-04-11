@@ -34,7 +34,7 @@ angular.module('SolarProject')
             y: function(d){return d[1];},
             useVoronoi: false,
             clipEdge: false,
-            transitionDuration: 0,
+            transitionDuration: -1,
             useInteractiveGuideline: true,
             xAxis: {
                 showMaxMin: true,

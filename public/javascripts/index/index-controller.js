@@ -22,8 +22,7 @@ angular.module('SolarProject')
 	 $scope.options = {
         chart: {
             type: 'stackedAreaChart',
-            height: 800,
-            width: 1200,
+            height: 400,
             margin : {
                 top: 20,
                 right: 20,
@@ -35,7 +34,7 @@ angular.module('SolarProject')
             useVoronoi: false,
             clipEdge: false,
             transitionDuration: -1,
-            useInteractiveGuideline: true,
+            useInteractiveGuideline: false,
             xAxis: {
                 showMaxMin: true,
                 tickFormat: function(d) {

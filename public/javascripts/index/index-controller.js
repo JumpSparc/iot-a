@@ -10,13 +10,6 @@ angular.module('SolarProject')
 				// return [+new Date(obj.created_at), obj.power];
 			});
 		}
-		// $scope.labels =['1','2','3','4','5'];
-	 //  $scope.series = ['Power'];
-	 //  $scope.data = [power];
-	 //  $scope.options = {
-	   	// animation: false
-	 //  };
-	 
 	   
 	 $scope.options = {
         chart: {
@@ -54,16 +47,12 @@ angular.module('SolarProject')
     $scope.data = [
         {
             "key" : "Power" ,
-            "values" : obj
+            "values" : obj.slice(Math.max(obj.length - 500, 1))
         }
 
     ];
 		$scope.$apply();
 	});
-
-  // $scope.onClick = function (points, evt) {
-  //   console.log(points, evt);
-  // };
 
   // function generateLabel(filter){
 		// var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

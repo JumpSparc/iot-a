@@ -10,7 +10,6 @@ angular.module('SolarProject')
 				// return [+new Date(obj.created_at), obj.power];
 			});
 		}
-		console.log(obj);
 		// $scope.labels =['1','2','3','4','5'];
 	 //  $scope.series = ['Power'];
 	 //  $scope.data = [power];
@@ -24,6 +23,7 @@ angular.module('SolarProject')
             type: 'stackedAreaChart',
             height: 400,
             width: 1200,
+            showControls: false,
             margin : {
                 top: 20,
                 right: 20,
@@ -34,12 +34,13 @@ angular.module('SolarProject')
             y: function(d){return d[1];},
             useVoronoi: false,
             clipEdge: false,
-            transitionDuration: -1,
-            useInteractiveGuideline: false,
+            duration: 0,
+            useInteractiveGuideline: true,
             xAxis: {
-                showMaxMin: true,
+                showMaxMin: false,
                 tickFormat: function(d) {
-                    return d3.time.format('%x')(new Date(d))
+                    return ''
+                    // return d3.time.format('%x')(new Date(d))
                 }
             },
             yAxis: {

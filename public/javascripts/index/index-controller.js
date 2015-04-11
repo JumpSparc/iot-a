@@ -23,7 +23,7 @@ angular.module('SolarProject')
         chart: {
             type: 'stackedAreaChart',
             height: 400,
-            width: 800,
+            width: 1200,
             margin : {
                 top: 20,
                 right: 20,

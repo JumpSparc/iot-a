@@ -48,15 +48,18 @@ module.exports = function(router, io, passport) {
 		
 		// save to DB
 		newLog.save(function(err) {
-			if(err) throw err;
-			var out = {};
-			Log.find({}, function(err, logs) {
-			  if (err) throw err;
-			  out = logs;
-			  // console.log('all:' + out);
-				io.sockets.emit('data',out);
-			});
-			res.json('save success!');
+			if(err){ res.json(err.error.message);}
+			else{
+
+				var out = {};
+				Log.find({}, function(err, logs) {
+				  if (err) throw err;
+				  out = logs;
+				  // console.log('all:' + out);
+					io.sockets.emit('data',out);
+				});
+				res.json('save success!');
+			}
 		});
 		
 	})

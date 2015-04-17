@@ -59,11 +59,6 @@ module.exports = function(router, io, passport) {
 			res.json('save success!');
 		});
 		
-		// obj.push(req.query);
-		// update
-		// updateFile(obj);
-		// io.sockets.emit('data', obj);
-		// res.json("Success");
 	})
 
 	// =========================

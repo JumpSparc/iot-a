@@ -4,11 +4,11 @@ angular.module('SolarProject')
     var obj;
 	socket.on('data', function(data) {
 
-		if (Object.keys(data).length !== 0) {
-			var obj = data.map(function(obj) {
-				return [+new Date(obj.created_at), obj.power];
-			});
-		}
+	if (Object.keys(data) !== undefined) {
+		obj = data.map(function(obj) {
+			return [+new Date(obj.created_at), obj.power];
+		});
+	}
 	   
 	 $scope.options = {
         chart: {

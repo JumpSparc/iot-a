@@ -20,7 +20,7 @@ var io           = require('socket.io')(server);
 // db
 var dbConfig     = require('./config/db.js');
 var mongoose     = require('mongoose');
-mongoose.connect(process.env.PROD_MONGODB || dbConfig.url);
+mongoose.connect(process.env.MONGOLAB_URI || dbConfig.url);
 
 var db = mongoose.connection;
 

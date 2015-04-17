@@ -39,7 +39,7 @@ module.exports = function(router, io, passport) {
 		console.log('push data:' +  (JSON.stringify(req.query))); 
 		
 		var newLog = Log({
-			id: 			req.query.guid,
+			device_id: 			req.query.guid,
 			power: 		req.query.power,
 			energy: 	req.query.energy,
 			duration: req.query.duration,

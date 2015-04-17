@@ -1,10 +1,10 @@
 angular.module('SolarProject')
 .controller('LogsController', [ '$scope', 'socket', function($scope, socket){
 	$scope.data = {};
-
+    var obj;
 	socket.on('data', function(data) {
 
-		if (data) {
+		if (Object.keys(data).length !== 0) {
 			var obj = data.map(function(obj) {
 				return [+new Date(obj.created_at), obj.power];
 			});

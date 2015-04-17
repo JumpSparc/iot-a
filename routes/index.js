@@ -1,4 +1,4 @@
-module.exports = function(router, io) {
+module.exports = function(router, io, passport) {
 	var Log = require('../models/log.js');
 
 
@@ -7,15 +7,10 @@ module.exports = function(router, io) {
 
 	io.on('connection', function(client){
 	  console.log('Client connected!');
-	 //  Log.find({}, function(err, logs) {
-		//   if (err) throw err;
-		//   obj = logs;
-		// });
-
-	  // get data from file
-   	 fs.readFile('./public/logs.json', 'utf8', function(err, data){
-	    obj = JSON.parse(data);
-	  });
+	  Log.find({}, function(err, logs) {
+		  if (err) throw err;
+		  obj = logs;
+		});
 
     // emit to new connection
 	  client.emit('data',obj);
@@ -26,7 +21,7 @@ module.exports = function(router, io) {
 	  	obj.push(data);
 
 	  	// update file
-	  	updateFile(obj);
+	  	// updateFile(obj);
 
 	  	// broadcast to others
 	  	client.broadcast.emit('data',obj);
@@ -37,52 +32,97 @@ module.exports = function(router, io) {
 	});
 
 	/* GET home page. */
-	router.get('/', function(req, res, next) {
-	  res.render('index');
+	router.get('/', isLoggedIn ,function(req, res, next) {
+	  res.render('index',  {
+      user : req.user // get the user out of session and pass to template
+    });
 	})
-	.get('/push', function(req, r2es, next) {
+
+	// ============================
+	// PUSH NEW LOG DATA
+	// ============================
+	.get('/push', function(req, res, next) {
 		console.log('push data:' +  (JSON.stringify(req.query))); 
 		
-		// var newLog = Log({
-		// 	id: 			req.query.guid,
-		// 	power: 		req.query.power,
-		// 	energy: 	req.query.energy,
-		// 	duration: req.query.duration,
-		// 	tstamp: 	req.query.tstamp
-		// });
+		var newLog = Log({
+			id: 			req.query.guid,
+			power: 		req.query.power,
+			energy: 	req.query.energy,
+			duration: req.query.duration,
+			tstamp: 	req.query.tstamp
+		});
 		
-		// newLog.save(function(err) {
-		// 	if(err) throw err;
-		// 	var out = {};
-		// 	Log.find({}, function(err, logs) {
-		// 	  if (err) throw err;
-		// 	  out = logs;
-		// 	  console.log('all:' + out);
-		// 		io.sockets.emit('data',out);
-		// 	});
-		// 	res.json('save success!');
-		// });
+		// save to DB
+		newLog.save(function(err) {
+			if(err) throw err;
+			var out = {};
+			Log.find({}, function(err, logs) {
+			  if (err) throw err;
+			  out = logs;
+			  console.log('all:' + out);
+				io.sockets.emit('data',out);
+			});
+			res.json('save success!');
+		});
 		
-		obj.push(req.query);
+		// obj.push(req.query);
 		// update
-		updateFile(obj);
-		io.sockets.emit('data', obj);
-		res.json("Success");
+		// updateFile(obj);
+		// io.sockets.emit('data', obj);
+		// res.json("Success");
 	})
-	// return integer value of current date
+
+	// =========================
+	// Return integer value of current date
+	// =========================
 	.get('/get_time', function(req, res, next) {
 		var currentdate = +new Date(); 
 		res.json(currentdate);
-	}); 
+	}) 
+	
+	// =========================
+	// Signup
+	// =========================
+	.get('/signup', function(req, res) {
+      // render the page and pass in any flash data if it exists
+      res.render('signup', { message: req.flash('signupMessage') });
+  })
+	.post('/signup', passport.authenticate('local-signup', {
+      successRedirect : '/', // redirect to the secure profile section
+      failureRedirect : '/signup', // redirect back to the signup page if there is an error
+      failureFlash : true // allow flash messages
+  }))
 
-	function updateFile(data){
-		fs.writeFile('./public/logs.json',JSON.stringify(data) , function(err) {
-			if(err){
-				console.log(err);
-			}else{
-				console.log('Update success!');
-			}
-		});
+	// =========================
+	// Login
+	// =========================
+	.get('/login', function(req,res,next){
+		res.render('login', { message: req.flash('loginMessage') });
+	})
+
+	.post('/login', passport.authenticate('local-login', {
+      successRedirect : '/', // redirect to the secure profile section
+      failureRedirect : '/login', // redirect back to the signup page if there is an error
+      failureFlash : true // allow flash messages
+  }))
+	
+	// =========================
+	// Logout
+	// =========================
+	.get('/logout', function(req, res) {
+      req.logout();
+      res.redirect('/');
+  });
+
+
+	// route middleware to make sure a user is logged in
+	function isLoggedIn(req, res, next) {
+
+	    // if user is authenticated in the session, carry on 
+	    if (req.isAuthenticated())
+	        return next();
+
+	    // if they aren't redirect them to the home page
+	    res.redirect('/login');
 	}
-
 };

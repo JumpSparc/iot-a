@@ -4,7 +4,7 @@ var Schema       = mongoose.Schema;
 
 // Schemas
 var logSchema = new Schema({
-  id: String,
+  device_id: String,
   power: Number,
   energy: Number,
   duration: Number,

@@ -1,6 +1,5 @@
 angular.module('SolarProject')
 .factory('socket', function SocketFactory() {
-	var socket = io.connect('http://solar-test.herokuapp.com/');
+	var socket = io.connect(window.location.href);
 	return socket;
 });
-

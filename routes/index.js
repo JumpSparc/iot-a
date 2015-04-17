@@ -33,9 +33,10 @@ module.exports = function(router, io, passport) {
 
 	/* GET home page. */
 	router.get('/', isLoggedIn ,function(req, res, next) {
-	  res.render('index',  {
-      user : req.user // get the user out of session and pass to template
-    });
+	  res.render('index')
+	  // res.render('index',  {
+   //    user : req.user // get the user out of session and pass to template
+   //  });
 	})
 
 	// ============================
@@ -78,41 +79,41 @@ module.exports = function(router, io, passport) {
 	.get('/get_time', function(req, res, next) {
 		var currentdate = +new Date(); 
 		res.json(currentdate);
-	}) 
+	}) ;
 	
 	// =========================
 	// Signup
 	// =========================
-	.get('/signup', function(req, res) {
-      // render the page and pass in any flash data if it exists
-      res.render('signup', { message: req.flash('signupMessage') });
-  })
-	.post('/signup', passport.authenticate('local-signup', {
-      successRedirect : '/', // redirect to the secure profile section
-      failureRedirect : '/signup', // redirect back to the signup page if there is an error
-      failureFlash : true // allow flash messages
-  }))
+	// .get('/signup', function(req, res) {
+ //      // render the page and pass in any flash data if it exists
+ //      res.render('signup', { message: req.flash('signupMessage') });
+ //  })
+	// .post('/signup', passport.authenticate('local-signup', {
+ //      successRedirect : '/', // redirect to the secure profile section
+ //      failureRedirect : '/signup', // redirect back to the signup page if there is an error
+ //      failureFlash : true // allow flash messages
+ //  }))
 
-	// =========================
-	// Login
-	// =========================
-	.get('/login', function(req,res,next){
-		res.render('login', { message: req.flash('loginMessage') });
-	})
+	// // =========================
+	// // Login
+	// // =========================
+	// .get('/login', function(req,res,next){
+	// 	res.render('login', { message: req.flash('loginMessage') });
+	// })
 
-	.post('/login', passport.authenticate('local-login', {
-      successRedirect : '/', // redirect to the secure profile section
-      failureRedirect : '/login', // redirect back to the signup page if there is an error
-      failureFlash : true // allow flash messages
-  }))
+	// .post('/login', passport.authenticate('local-login', {
+ //      successRedirect : '/', // redirect to the secure profile section
+ //      failureRedirect : '/login', // redirect back to the signup page if there is an error
+ //      failureFlash : true // allow flash messages
+ //  }))
 	
-	// =========================
-	// Logout
-	// =========================
-	.get('/logout', function(req, res) {
-      req.logout();
-      res.redirect('/');
-  });
+	// // =========================
+	// // Logout
+	// // =========================
+	// .get('/logout', function(req, res) {
+ //      req.logout();
+ //      res.redirect('/');
+ //  });
 
 
 	// route middleware to make sure a user is logged in

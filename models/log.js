@@ -1,9 +1,8 @@
 // db
 var mongoose     = require('mongoose');
-var Schema       = mongoose.Schema;
 
 // Schemas
-var logSchema = new Schema({
+var logSchema = mongoose.Schema({
   device_id: String,
   power: Number,
   energy: Number,
@@ -13,5 +12,4 @@ var logSchema = new Schema({
 }); 
 
 // Model
-var Log = mongoose.model('Logs',logSchema);
-module.exports = Log;
+module.exports = mongoose.model('Log',logSchema);

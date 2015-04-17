@@ -53,7 +53,7 @@ module.exports = function(router, io, passport) {
 			Log.find({}, function(err, logs) {
 			  if (err) throw err;
 			  out = logs;
-			  console.log('all:' + out);
+			  // console.log('all:' + out);
 				io.sockets.emit('data',out);
 			});
 			res.json('save success!');
@@ -66,7 +66,7 @@ module.exports = function(router, io, passport) {
 	// =========================
 	.get('/get_time', function(req, res, next) {
 		var currentdate = +new Date(); 
-		res.json(currentdate);
+		res.json("TIME: " + currentdate);
 	}) 
 	
 	// =========================

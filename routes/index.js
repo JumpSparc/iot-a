@@ -48,7 +48,7 @@ module.exports = function(router, io, passport) {
 		
 		// save to DB
 		newLog.save(function(err) {
-			if(err){ res.json(err.error.message);}
+			if(err){ res.json(err.message);}
 			else{
 
 				var out = {};

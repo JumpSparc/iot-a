@@ -17,12 +17,6 @@ module.exports = function(router, io, passport) {
 
 	  // listen to connection
 	  client.on('data', function(data){
-	  	// push data to object
-	  	obj.push(data);
-
-	  	// update file
-	  	// updateFile(obj);
-
 	  	// broadcast to others
 	  	client.broadcast.emit('data',obj);
 

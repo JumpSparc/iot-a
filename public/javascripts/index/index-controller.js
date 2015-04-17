@@ -4,7 +4,7 @@ angular.module('SolarProject')
     var obj;
 	socket.on('data', function(data) {
 
-	if (Object.keys(data) !== undefined) {
+	if (Object.keys(data) !== undefined || Object.keys(data).length !== 0) {
 		obj = data.map(function(obj) {
 			return [+new Date(obj.created_at), obj.power];
 		});
@@ -28,7 +28,7 @@ angular.module('SolarProject')
             duration: 0,
             useInteractiveGuideline: true,
             yDomain: [0,15000],
-            xAxis: {
+                xAxis: {
                 showMaxMin: false,
                 tickFormat: function(d) {
                     // return ''

@@ -27,7 +27,7 @@ angular.module('SolarProject')
             clipEdge: false,
             duration: 0,
             useInteractiveGuideline: true,
-            yDomain: [0,15000],
+//            yDomain: [0,15000],
                 xAxis: {
                 showMaxMin: false,
                 tickFormat: function(d) {

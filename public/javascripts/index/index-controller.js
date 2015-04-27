@@ -1,56 +1,70 @@
 angular.module('SolarProject')
-.controller('LogsController', [ '$scope', 'socket', function($scope, socket){
-	$scope.data = {};
-    var obj;
-	socket.on('data', function(data) {
+.controller('LogsController', ['$http', '$scope', 'socket', function($http, $scope, socket){
+  $scope.data = [
+  {
+      "key" : "Power" ,
+      "values" : []
+  }];
+  
+  // Get initial data from server
+  $http.get('/fetch')
+    .success(function(data, status, headers, config){
+      if (Object.keys(data) !== undefined) {
+        var obj = data.map(function(obj) {
+          return [+new Date(obj.created_at), obj.power];
+        });
 
-	if (Object.keys(data) !== undefined || Object.keys(data).length !== 0) {
-		obj = data.map(function(obj) {
-			return [+new Date(obj.created_at), obj.power];
-		});
-	}
-	   
-	 $scope.options = {
-        chart: {
-            type: 'stackedAreaChart',
-            height: 400,
-            showControls: false,
-            margin : {
-                top: 20,
-                right: 20,
-                bottom: 60,
-                left: 80
-            },
-            x: function(d){return d[0];},
-            y: function(d){return d[1];},
-            useVoronoi: false,
-            clipEdge: false,
-            duration: 0,
-            useInteractiveGuideline: true,
-//            yDomain: [0,15000],
-                xAxis: {
-                showMaxMin: false,
-                tickFormat: function(d) {
-                    // return ''
-                    return d3.time.format('%x')(new Date(d))
-                }
-            },
-            yAxis: {
-                tickFormat: function(d){
-                    return d3.format(',.2f')(d);
-                }
-            }
+        $scope.data[0].values = obj;
+      }
+    })
+    .error(function(data, status, headers, config) {
+      console.log('err' + data);
+    });
+
+
+  // Chart options
+  $scope.options = {
+    chart: {
+        type: 'stackedAreaChart',
+        height: 400,
+        showControls: false,
+        margin : {
+            top: 20,
+            right: 20,
+            bottom: 60,
+            left: 80
+        },
+        x: function(d){return d[0];},
+        y: function(d){return d[1];},
+        useVoronoi: false,
+        clipEdge: false,
+        duration: 0,
+        useInteractiveGuideline: true,
+    //  yDomain: [0,15000],
+    xAxis: {
+    showMaxMin: false,
+    tickFormat: function(d) {
+              // return ''
+            return d3.time.format('%x')(new Date(d))
+          }
+        },
+        yAxis: {
+          tickFormat: function(d){
+              return d3.format(',.2f')(d);
+          }
         }
+      }
     };
 
-    $scope.data = [
-        {
-            "key" : "Power" ,
-            "values" : obj
-        }
+    // listen for push data
+    socket.on('data', function(data) {
+      console.log(data);
+        
+      if (data.power !== undefined || data.created_at !== undefined) {
+        $scope.data[0].values.push([+new Date(data.created_at), data.power]);
+      }
+      $scope.$apply();    
 
-    ];
-		$scope.$apply();
-	});
+    });
 
 }]); 

@@ -5,33 +5,42 @@ module.exports = function(router, io, passport) {
 	var fs  = require('fs');
 	var obj = {};
 
-	io.on('connection', function(client){
-	  console.log('Client connected!');
-	  Log.find({}, function(err, logs) {
-		  if (err) throw err;
-		  obj = logs;
-		});
-
-    // emit to new connection
-	  client.emit('data',obj);
-
-	  // listen to connection
-	  client.on('data', function(data){
-	  	// broadcast to others
-	  	client.broadcast.emit('data',obj);
-
-	  	// emit to self
-	  	client.emit('data',obj);
-	  });
-	});
 
 	/* GET home page. */
 	router.get('/', isLoggedIn ,function(req, res, next) {
+		io.on('connection', function(client){
+		  console.log('Client connected!');
+		  Log.find({}, function(err, logs) {
+			  if (err) throw err;
+			  obj = logs;
+			});
+
+	    // emit to new connection
+		  client.emit('data',obj);
+
+		  // listen to connection
+		  client.on('data', function(data){
+		  	// broadcast to others
+		  	client.broadcast.emit('data',obj);
+
+		  	// emit to self
+		  	client.emit('data',obj);
+		  });
+		});
 	  res.render('index',  {
       user : req.user // get the user out of session and pass to template
     });
 	})
 
+	// ============================
+	// Get all for initial stuff
+	// ============================
+	.get('/fetch', function(req,res,next){
+		Log.find({}, function(err, logs) {
+		  if (err) throw err;
+			res.json(logs);
+		});
+	})
 	// ============================
 	// PUSH NEW LOG DATA
 	// ============================
@@ -51,13 +60,14 @@ module.exports = function(router, io, passport) {
 			if(err){ res.json(err);}
 			else{
 
-				var out = {};
-				Log.find({}, function(err, logs) {
-				  if (err) throw err;
-				  out = logs;
-				  // console.log('all:' + out);
-					io.sockets.emit('data',out);
-				});
+				// var out = {};
+				// Log.find({}, function(err, logs) {
+				//   if (err) throw err;
+				//   out = logs;
+				//   // console.log('all:' + out);
+				// 	io.sockets.emit('data',out);
+				// });
+				io.sockets.emit('data',newLog);
 				res.json('save success!');
 			}
 		});
@@ -93,18 +103,32 @@ module.exports = function(router, io, passport) {
 	})
 
 	.post('/login', passport.authenticate('local-login', {
-      successRedirect : '/', // redirect to the secure profile section
-      failureRedirect : '/login', // redirect back to the signup page if there is an error
-      failureFlash : true // allow flash messages
+    successRedirect : '/', // redirect to the secure profile section
+    failureRedirect : '/login', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
   }))
 	
 	// =========================
 	// Logout
 	// =========================
-	.get('/logout', function(req, res) {
-      req.logout();
-      res.redirect('/');
-  });
+	.get('/logout', function(req, res, next) {
+    req.logout();
+    res.redirect('/');
+  })
+
+	// =========================
+	// Device 
+	// =========================
+	.get('/devices', isLoggedIn, function(req, res, next){
+    res.render('devices',  {
+      user : req.user // get the user out of session and pass to template
+    });
+	})
+
+
+	.get('/device/:id', function(req, res, next){
+		res.json('asd');
+	});
 
 
 	// route middleware to make sure a user is logged in

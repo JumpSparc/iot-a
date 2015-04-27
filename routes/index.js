@@ -2,21 +2,18 @@ module.exports = function(router, io, passport) {
 	var Log = require('../models/log.js');
 
 
-	var fs  = require('fs');
-	var obj = {};
-
-
 	/* GET home page. */
 	router.get('/', isLoggedIn ,function(req, res, next) {
+	var obj = {};
 		io.on('connection', function(client){
 		  console.log('Client connected!');
-		  Log.find({}, function(err, logs) {
-			  if (err) throw err;
-			  obj = logs;
-			});
+		 //  Log.find({}, function(err, logs) {
+			//   if (err) throw err;
+			//   obj = logs;
+			// });
 
 	    // emit to new connection
-		  client.emit('data',obj);
+		  // client.emit('init',obj);
 
 		  // listen to connection
 		  client.on('data', function(data){
@@ -36,9 +33,10 @@ module.exports = function(router, io, passport) {
 	// Get all for initial stuff
 	// ============================
 	.get('/fetch', function(req,res,next){
-		Log.find({}, function(err, logs) {
+		var d = Log.find({}).sort({'created_at': -1}).limit(1000);
+		d.exec( function(err, logs) {
 		  if (err) throw err;
-			res.json(logs);
+			res.send(logs);
 		});
 	})
 	// ============================

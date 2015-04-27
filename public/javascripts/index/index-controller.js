@@ -22,6 +22,8 @@ angular.module('SolarProject')
     });
 
 
+
+
   // Chart options
   $scope.options = {
     chart: {
@@ -58,7 +60,6 @@ angular.module('SolarProject')
 
     // listen for push data
     socket.on('data', function(data) {
-      console.log(data);
         
       if (data.power !== undefined || data.created_at !== undefined) {
         $scope.data[0].values.push([+new Date(data.created_at), data.power]);

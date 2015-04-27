@@ -1,3 +1,3 @@
 (function() {
-	angular.module('SolarProject', ["ngRoute","nvd3"]); 
+	angular.module('SolarProject', ["ngResource","ngRoute","nvd3"]); 
 })();

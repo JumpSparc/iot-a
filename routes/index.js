@@ -1,5 +1,7 @@
 module.exports = function(router, io, passport) {
 	var Log = require('../models/log.js');
+	var User = require('../models/user.js');
+	var Device = require('../models/device.js');
 
 
 	/* GET home page. */
@@ -33,12 +35,66 @@ module.exports = function(router, io, passport) {
 	// Get all for initial stuff
 	// ============================
 	.get('/fetch', function(req,res,next){
-		var d = Log.find({}).sort({'created_at': -1}).limit(1000);
+		var d = Log.find().sort({'created_at': -1}).limit(1000);
 		d.exec( function(err, logs) {
 		  if (err) throw err;
 			res.send(logs);
 		});
 	})
+	// ============================
+	// Get data for specific id
+	// ============================
+	.get('/fetch/:id', function(req,res,next){
+		var id = req.params.id;
+
+		var d = Log.find({'device_id' : id }).sort({'created_at': -1}).limit(1000);
+		d.exec( function(err, logs) {
+		  if (err) throw err;
+			res.send(logs);
+		});
+	})
+	// ============================
+	// Get all for initial stuff
+	// ============================
+	.get('/fetch_devices', function(req,res,next){
+		// User.find({ _id : //})
+		// console.log(req.user.devices);
+		var d = Device.find({'id' : { $in: req.user.devices } }).sort({'created_at': -1});
+		d.exec( function(err, devices) {
+		  if (err) throw err;
+			res.send(devices);
+		});
+	})
+	
+	// ============================
+	// Add Device
+	// ============================
+	.post('/add_device', function(req,res,next){
+		console.log(req.user);
+		var newDevice = Device({
+			name: req.body.name,
+			type: req.body.type,
+			description: req.body.description,
+			graph: req.body.graph,
+			gmap: req.body.gmap
+		});
+
+		newDevice.save(function(err){
+			console.log(this);
+			console.log(req.user);
+			if(err){res.json(err);}
+			else{
+				User.findOne ({_id: req.user._id}, function(err,user){
+					if(err){res.json(err);}
+					user.devices.push(this._id);
+					user.save();
+				});
+				console.log('added new device');
+				res.json(this);
+			}
+		});
+	})
+
 	// ============================
 	// PUSH NEW LOG DATA
 	// ============================

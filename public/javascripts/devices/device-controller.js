@@ -15,17 +15,12 @@ angular.module('SolarProject')
   });
 
   $scope.addDevice = function(isValid){
-  	// console.log(this.form);
-  	// console.log(this.newDevice);
-  	// console.log(isValid);
   	if (isValid) {
 	  	$http.post("/add_device", this.form)
 	  	.success(function(data) {
-		    console.log( data);
-	  		console.log('success');
+        $scope.devices.unshift(data);
 	  	})
 	  	.error(function(data){
-	  		console.log('error');
 		    console.log('err' + data);
 	  	});
 	  	

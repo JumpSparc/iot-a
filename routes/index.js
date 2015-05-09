@@ -1,8 +1,8 @@
 module.exports = function(router, io, passport) {
+	var async = require('async');
 	var Log = require('../models/log.js');
 	var User = require('../models/user.js');
 	var Device = require('../models/device.js');
-
 
 	/* GET home page. */
 	router.get('/', isLoggedIn ,function(req, res, next) {
@@ -35,11 +35,38 @@ module.exports = function(router, io, passport) {
 	// Get all for initial stuff
 	// ============================
 	.get('/fetch', function(req,res,next){
-		var d = Log.find().sort({'created_at': -1}).limit(1000);
-		d.exec( function(err, logs) {
+		var devices = [];
+
+		async.map(req.user.devices, function(key, next){
+			var d = Log.find({"device_id": key}).sort({'created_at': -1}).limit(1000);
+			d.exec( function(err, logs) {
+			  if (err) throw err; 
+				var obj = {};
+				obj["_id"] = logs[0]._id;
+				obj["key"] = "Power";
+				obj["values"] = logs.map(function(log) {
+          return [+new Date(log.created_at), log.power];
+        });
+
+			  next(err,[obj]);
+			});
+
+		},
+
+		function(err,result){
 		  if (err) throw err;
-			res.send(logs);
+				console.log(result);
+			res.send(result);
 		});
+
+		// var d = Log.find({'device_id' : { $in: req.user.devices }}).sort({'created_at': -1}).limit(1000);
+
+
+		// var d = Log.find().sort({'created_at': -1}).limit(1000);
+		// d.exec( function(err, logs) {
+		//   if (err) throw err;
+		// 	res.send(logs);
+		// });
 	})
 	// ============================
 	// Get data for specific id
@@ -59,7 +86,7 @@ module.exports = function(router, io, passport) {
 	.get('/fetch_devices', function(req,res,next){
 		// User.find({ _id : //})
 		// console.log(req.user.devices);
-		var d = Device.find({'id' : { $in: req.user.devices } }).sort({'created_at': -1});
+		var d = Device.find({'_id' : { $in: req.user.devices } }).sort({'created_at': -1});
 		d.exec( function(err, devices) {
 		  if (err) throw err;
 			res.send(devices);
@@ -80,17 +107,17 @@ module.exports = function(router, io, passport) {
 		});
 
 		newDevice.save(function(err){
-			console.log(this);
-			console.log(req.user);
 			if(err){res.json(err);}
+
 			else{
 				User.findOne ({_id: req.user._id}, function(err,user){
 					if(err){res.json(err);}
-					user.devices.push(this._id);
+					user.devices.push(newDevice._id);
 					user.save();
 				});
 				console.log('added new device');
-				res.json(this);
+				console.log(newDevice);
+				res.json(newDevice);
 			}
 		});
 	})

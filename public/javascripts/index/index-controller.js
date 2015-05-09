@@ -6,20 +6,19 @@ angular.module('SolarProject')
       "values" : []
   }];
   
+  $scope.devices = [];
+
   // Get initial data from server
   $http.get('/fetch')
     .success(function(data, status, headers, config){
       if (Object.keys(data) !== undefined) {
-        var obj = data.map(function(obj) {
-          return [+new Date(obj.created_at), obj.power];
-        });
-
-        $scope.data[0].values = obj;
+        $scope.devices = data;
       }
     })
     .error(function(data, status, headers, config) {
       console.log('err' + data);
     });
+
 
 
 

@@ -62,13 +62,21 @@
 			</form>
 
 			<div ng-switch-default>
-				<button class="btn btn-success btn-lg btn-block" ng-click="$parent.step = 1" >
-					<i class="glyphicon glyphicon-plus"></i> Register an IOT Device 
-				</button>
-
-				<div ng-repeat="device in devices">
-					{{device.name}} ({{device.type}})
-				</div>
+				<div>
+					<button class="btn btn-success btn-lg btn-block" ng-click="$parent.step = 1" >
+						<i class="glyphicon glyphicon-plus"></i> Register an IOT Device 
+					</button>
+					</div>
+					
+				<table class="table table-hover">
+					<thead></thead>
+					<tbody>
+						<tr ng-repeat="device in devices">
+							<td> {{device.name}} ({{device.type}}) </td>
+						</tr>
+					</tbody>
+				</table>
+							
 			</div>
 		</div>
 							

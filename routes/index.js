@@ -35,20 +35,27 @@ module.exports = function(router, io, passport) {
 	// Get all for initial stuff
 	// ============================
 	.get('/fetch', function(req,res,next){
-		var devices = [];
-
 		async.map(req.user.devices, function(key, next){
-			var d = Log.find({"device_id": key}).sort({'created_at': -1}).limit(1000);
-			d.exec( function(err, logs) {
-			  if (err) throw err; 
-				var obj = {};
-				if (logs.length > 0) {
+			var obj = {};
 
-					obj["_id"] = logs[0]._id;
-					obj["key"] = "Power";
+			Device.findOne({"_id": key}).exec(function(err,d){
+			  if (err) throw err; 
+				obj["_id"] = d._id;
+				obj["key"] = d.type;
+				obj["name"] = d.name;
+				obj["graph"] = d.graph;
+				obj["gmap"] = d.gmap;
+			});
+
+			var log = Log.find({"device_id": key}).sort({'created_at': -1}).limit(1000);
+			log.exec( function(err, logs) {
+			  if (err) throw err; 
+				if (logs.length > 0) {
 					obj["values"] = logs.map(function(log) {
 	          return [+new Date(log.created_at), log.power];
 	        });
+				}else{
+					obj["values"] = []
 				}
 
 			  next(err,[obj]);
@@ -58,8 +65,7 @@ module.exports = function(router, io, passport) {
 
 		function(err,result){
 		  if (err) throw err;
-				console.log(result);
-			res.send(result);
+			res.send(result.reverse());
 		});
 
 		// var d = Log.find({'device_id' : { $in: req.user.devices }}).sort({'created_at': -1}).limit(1000);

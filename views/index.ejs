@@ -8,7 +8,8 @@
 			<div class="header" ng-controller="LogsController">			
 				
 				<div ng-repeat="device in devices">
-					<h1> id: {{device[0]._id}} </h1>
+					<h4> Device name: {{device[0].name}} </h4>
+					<p> {{device[0]._id}} </p>
 					<nvd3 options='options' data='device'></nvd3>
 				</div>
 					

@@ -42,11 +42,14 @@ module.exports = function(router, io, passport) {
 			d.exec( function(err, logs) {
 			  if (err) throw err; 
 				var obj = {};
-				obj["_id"] = logs[0]._id;
-				obj["key"] = "Power";
-				obj["values"] = logs.map(function(log) {
-          return [+new Date(log.created_at), log.power];
-        });
+				if (logs.length > 0) {
+
+					obj["_id"] = logs[0]._id;
+					obj["key"] = "Power";
+					obj["values"] = logs.map(function(log) {
+	          return [+new Date(log.created_at), log.power];
+	        });
+				}
 
 			  next(err,[obj]);
 			});

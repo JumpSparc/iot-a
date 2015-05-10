@@ -1,10 +1,10 @@
 angular.module('SolarProject')
 .controller('LogsController', ['$http', '$scope', 'socket', function($http, $scope, socket){
-  $scope.data = [
-  {
-      "key" : "Power" ,
-      "values" : []
-  }];
+  // $scope.data = [
+  // {
+  //     "key" : "Power" ,
+  //     "values" : []
+  // }];
   
   $scope.devices = [];
 
@@ -61,9 +61,20 @@ angular.module('SolarProject')
     socket.on('data', function(data) {
         
       if (data.power !== undefined || data.created_at !== undefined) {
-        $scope.data[0].values.push([+new Date(data.created_at), data.power]);
+        for (var i = 0; i < $scope.devices.length; i++) {
+          if ($scope.devices[i][0]._id == data.device_id) {
+            $scope.devices[i][0].values.push([+new Date(data.created_at), data.power]);
+            break;
+          }
+        };
+        $scope.$apply();    
+            
+      // if (data.power !== undefined || data.created_at !== undefined) {
+      //   $scope.devices[0][0].values.push([+new Date(data.created_at), data.power]);
+      // }
+      // $scope.$apply();    
+
       }
-      $scope.$apply();    
 
     });
 

@@ -21,7 +21,13 @@
 					<p> Id: {{device[0]._id}} </p>
 					<nvd3 options='options' data='device'></nvd3>
 				</div>
-					
+				
+				<div ng-show="devices.length == 0">
+					<a href="/devices?n=1" class="btn btn-success btn-block btn-lg">
+						<i class="glyphicon glyphicon-plus"></i>
+						Register an IOT device!
+					</a>
+				</div>	
 
 <!-- 				<div class="col-xs-8 col-sm-8 col-sm-offset-4 col-md-8 col-md-offset-4 col-lg-8 col-lg-offset-4">
 					

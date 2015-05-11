@@ -15,11 +15,14 @@
 		<select name="graph" class="form-control" ng-init="edit.graph" ng-model="edit.graph" ng-options="g as (g | capitalize) for g in graphs" required></select>
 	</div>
 	<div class="form-group">
-		<label>Google map</label>
+		<label>Location</label>
 		<input type="text" name="gmap" ng-model="edit.gmap" value="{{edit.gmap}}" class="form-control">
 	</div>
-	<button 
-	class="btn btn-success" type="submit"
-	ng-disabled="editDeviceForm.name.$invalid || editDeviceForm.type.$invalid || editDeviceForm.graph.$invalid">
-	Save changes</button>
+	<div class="text-right">
+		<button 
+		class="btn btn-success" type="submit"
+		ng-disabled="editDeviceForm.name.$invalid || editDeviceForm.type.$invalid || editDeviceForm.graph.$invalid">
+		Save changes</button>
+	</div>
 </form>
+		

@@ -5,7 +5,7 @@ angular.module('SolarProject')
   //     "key" : "Power" ,
   //     "values" : []
   // }];
-  
+  $scope.nav = 0;
   $scope.devices = [];
 
   // Get initial data from server

@@ -231,14 +231,6 @@ module.exports = function(router, io, passport) {
 		});
 	})
 
-	// .get('/device/edit/:id', isLoggedIn, function(req, res, next){
-	// 	Device.findOne({"_id": req.params.id}, function(err, device){
-	//     res.render('edit-device',  {
-	//       user : req.user, // get the user out of session and pass to template
-	//       device: device
-	//     });
-	// 	});
-	// })
 
 	.delete('/device/:id', function(req, res, next){
     Device.findOneAndRemove({ "_id": req.params.id}, function(err,result) {

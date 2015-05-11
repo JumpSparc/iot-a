@@ -23,30 +23,51 @@
 				<textarea name="description" class="form-control" placeholder="describe me" ng-model="form.description"></textarea>
 				
 				<br>
-				<button class="btn btn-danger" ng-click="$parent.cancel()">Cancel</button>
-				<button class="btn btn-success" 
-					ng-click="$parent.step=2"
-					ng-disabled="newDevice.name.$invalid || newDevice.type.$invalid"
-					>
-					Next
-				</button>
+				
+				<div class="text-right">
+					<button class="btn btn-danger btn-sm" ng-click="$parent.cancel()">Cancel</button>
+					<button class="btn btn-success btn-sm" 
+						ng-click="$parent.step=2"
+						ng-disabled="newDevice.name.$invalid || newDevice.type.$invalid"
+						>
+						Next
+					</button>
+				</div>
 			</div>
 
 
 			<div ng-switch-when="2"  class="form-group">
 
-				<h2 class="center"> What kind of graph?</h2>
-				<input type="radio" class="graph-choice" name="graph" value="bar" id="barGraph" ng-model="form.graph" required>
-				<label for="barGraph"><img src="/images/bar.png" class="img-responsive"></label>
-				<span id="or">or</span>
-				<input type="radio" class="graph-choice" name="graph" value="line" id="lineGraph" ng-model="form.graph" required>
-				<label for="lineGraph"><img src="/images/line.png"  class="img-responsive"></label>
+				<h2 class="text-center"> What kind of graph?</h2>
+				
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="form-group col-xs-5 col-sm-5 col-md-5 col-lg-5">
+						<input type="radio" class="graph-choice img-responsive" name="graph" value="bar" id="barGraph" ng-model="form.graph" required>
+						<label for="barGraph"><img src="/images/bar.png" class="img-responsive"></label>
+						<h4 class="text-center">Bar Graph</h4>
+					</div>
+						
+					<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="or">
+						<span>or</span>
+					</div>
+
+					<div class="form-group col-xs-5 col-sm-5 col-md-5 col-lg-5">
+						<input type="radio" class="graph-choice img-responsive" name="graph" value="line" id="lineGraph" ng-model="form.graph" required>
+						<label for="lineGraph"><img src="/images/line.png"  class="img-responsive"></label>
+
+						<h4 class="text-center">Line Graph</h4>
+					</div>
+				</div>
+					
 				
 				<br>
 				<br>
-				<button class="btn btn-info" ng-click="$parent.step=step - 1">Back</button>
-				<button class="btn btn-danger" ng-click="$parent.cancel()">Cancel</button>
-				<button class="btn btn-success" ng-click="$parent.step=3" ng-disabled="newDevice.graph.$invalid ">Next</button>
+						
+				<div class="text-right">
+					<button class="btn btn-primary btn-sm" ng-click="$parent.step=step - 1">Back</button>
+					<button class="btn btn-danger btn-sm" ng-click="$parent.cancel()">Cancel</button>
+					<button class="btn btn-success btn-sm" ng-click="$parent.step=3" ng-disabled="newDevice.graph.$invalid ">Next</button>
+				</div>
 					
 			</div>
 
@@ -54,16 +75,19 @@
 				<label>Enter Location</label>
 				<input name="gmap" type="text" ng-model="form.gmap" class="form-control" required>
 
-				<button class="btn btn-info" ng-click="$parent.step=step - 1">Back</button>
-				<button class="btn btn-danger" ng-click="$parent.cancel()">Cancel</button>
-				<button type="submit" class="btn btn-success" ng-disabled="newDevice.gmap.$invalid">Submit</button>
+				<br>
+				<div class="text-right">
+					<button class="btn btn-info btn-sm" ng-click="$parent.step=step - 1">Back</button>
+					<button class="btn btn-danger btn-sm" ng-click="$parent.cancel()">Cancel</button>
+					<button type="submit" class="btn btn-success btn-sm" ng-disabled="newDevice.gmap.$invalid">Submit</button>
+				</div>
 			</div>
 			
 			</form>
 
 			<div ng-switch-default>
 					
-				<table class="table table-striped" ng-show="devices.length > 0">
+				<table class="table table-striped device-list" ng-show="devices.length > 0">
 					<thead>
 						<th>Name</th>
 						<th>Type</th>
@@ -76,11 +100,11 @@
 							<td> 
 									
 								<p class="text-right">
-								<button class="btn btn-primary"  
+								<button class="btn btn-primary btn-sm"  
 									ng-click="$parent.editDevice(device)">
 										Edit <i class="glyphicon glyphicon-edit"></i>
 								</button>
-									<button class="btn btn-danger" 
+									<button class="btn btn-danger btn-sm" 
 										ng-click="destroyConfirm(device, $index)"
 										ng-confirm-click="lel?"> 
 										Remove <i class="glyphicon glyphicon-remove"></i>

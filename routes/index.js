@@ -106,7 +106,6 @@ module.exports = function(router, io, passport) {
 	// Add Device
 	// ============================
 	.post('/add_device', function(req,res,next){
-		console.log(req.user);
 		var newDevice = Device({
 			name: req.body.name,
 			type: req.body.type,
@@ -125,7 +124,6 @@ module.exports = function(router, io, passport) {
 					user.save();
 				});
 				console.log('added new device');
-				console.log(newDevice);
 				res.json(newDevice);
 			}
 		});
@@ -215,9 +213,44 @@ module.exports = function(router, io, passport) {
     });
 	})
 
-
+	// view device
 	.get('/device/:id', function(req, res, next){
 		res.json('asd');
+	})
+
+	// update device
+	.put('/device/:id', function(req, res, next){
+		Device.update({"_id": req.params.id},{
+			name: req.body.name,
+			type: req.body.type,
+			graph: req.body.graph,
+			gmap: req.body.gmap
+		}, function(err, device){
+			
+			res.json(device);
+		});
+	})
+
+	// .get('/device/edit/:id', isLoggedIn, function(req, res, next){
+	// 	Device.findOne({"_id": req.params.id}, function(err, device){
+	//     res.render('edit-device',  {
+	//       user : req.user, // get the user out of session and pass to template
+	//       device: device
+	//     });
+	// 	});
+	// })
+
+	.delete('/device/:id', function(req, res, next){
+    Device.findOneAndRemove({ "_id": req.params.id}, function(err,result) {
+    if (err) { res.json('fail to remove from devices'); }
+    	var ObjectId = require('mongoose').Types.ObjectId;
+    	var user = User.findOneAndUpdate({ "_id": req.user._id}, 
+    		{ $pull: {"devices": new ObjectId(req.params.id)}}, function(f, s){
+    		if (f) { res.json('fail to remove from user'); }
+    		res.json('delete success ');
+    	});
+    });
+		
 	});
 
 

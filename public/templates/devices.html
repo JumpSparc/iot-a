@@ -1,10 +1,4 @@
-<html ng-app="SolarProject">
-<% include ./partials/header %>
-
-<body>
-	<% include ./partials/navbar %>
-	<div class="container">
-		<div ng-switch="step" class="col-xs-8 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2" ng-controller="DeviceController">
+<div ng-switch="step" class="col-xs-8 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2" ng-controller="DeviceController">
 			<form name="newDevice" ng-submit="addDevice(newDevice.$valid)" novalidate>	
 
 			<div ng-switch-when="1" class="form-group">
@@ -16,7 +10,7 @@
 				<select name="type" class="form-control" ng-model="form.type" required>
 					<option></option>
 					<option value="electricity">Electricity</option>
-					<option value="temperature">Temperature</option>
+					<option valeu="temperature">Temperature</option>
 				</select>
 
 				<label>Description</label>
@@ -63,52 +57,28 @@
 
 			<div ng-switch-default>
 					
-				<table class="table table-striped" ng-show="devices.length > 0">
+				<table class="table table-striped">
 					<thead>
 						<th>Name</th>
 						<th>Type</th>
 						<th></th>
 					</thead>
 					<tbody>
-						<tr ng-repeat="device in devices" id="{{device._id}}">
-							<td>{{device.name | capitalize}}</td>
-							<td>{{device.type | capitalize}}</td>
+						<tr ng-repeat="device in devices">
+							<td>{{device.name}}</td>
+							<td>{{device.type}}</td>
 							<td> 
-									
 								<p class="text-right">
-								<button class="btn btn-primary"  
-									ng-click="$parent.editDevice(device)">
-										Edit <i class="glyphicon glyphicon-edit"></i>
-								</button>
-									<button class="btn btn-danger" 
-										ng-click="destroyConfirm(device, $index)"
-										ng-confirm-click="lel?"> 
-										Remove <i class="glyphicon glyphicon-remove"></i>
-									</button>
+									<button class="btn btn-primary"> Edit <i class="glyphicon glyphicon-edit"></i></button>
+									<button class="btn btn-danger"> Remove <i class="glyphicon glyphicon-remove"></i></button>
 								</p>
 							</td>
 						</tr>
 					</tbody>
 				</table>
-
-				<div ng-show="devices == 0" class="text-center jumbotron"><h4>No Devices</h4></div>
 							
 				<button class="btn btn-success btn-lg " ng-click="$parent.step = 1" >
 					<i class="glyphicon glyphicon-plus"></i> Register an IOT Device 
 				</button>
 			</div>
-
-
 		</div>
-	</div>
-
-
-
-
-	<% include ./partials/footer %>	
-	
-	<script src="/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="/javascripts/angularApp.js"></script>
-	<script src="/javascripts/devices/device-controller.js"></script>
-</body>
-</html>

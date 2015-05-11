@@ -31,6 +31,9 @@ module.exports = function(router, io, passport) {
     });
 	})
 
+	.get('/generate', function(req,res,next){
+		res.render('generate');
+	})
 	// ============================
 	// Get all for initial stuff
 	// ============================

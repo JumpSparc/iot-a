@@ -1,0 +1,50 @@
+<html ng-app="SolarProject">
+<% include ./partials/header %>
+
+<body ng-controller="GenerateController">
+	<% include ./partials/navbar %>
+	
+	<div class="container" > 
+		<div class="form-group">
+			<label>ID</label>
+			<input type="text" class="form-control" ng-model="id"><br>
+		</div>
+			
+		<button id="g" class="btn btn-block btn-lg btn-success" ng-click="generate()" ng-show="!g">Generate</button>
+		<button id="g" class="btn btn-block btn-lg btn-danger" ng-click="stop()" ng-show="g">Stop</button>
+	</div>
+
+	
+	<% include ./partials/footer %>
+	
+	<script>
+		angular.module('SolarProject')
+		.controller('GenerateController',['$http', '$scope', '$interval', function($http, $scope, $interval) {
+			$scope.id = null;
+			$scope.g = false;
+
+			$scope.generate = function(){
+				$scope.g = true;
+				$scope.interval =	$interval(function(){
+					var power = (Math.random() * (3300 - 2500) + 2500).toFixed(2);
+					var energy = (Math.random() * (2 - 4) + 2500).toFixed(2);
+					var link = "/push?guid="+ $scope.id+"&power="+power +"&energy="+ energy +"&tstamp=132000&duration=3000";
+					$http.get(link)
+					.success(function(data){
+						console.log(data);
+					})
+					.error(function(data){
+						console.log("err: " + data)
+					});
+				}, 3000);
+			};
+
+			$scope.stop = function(){
+				$scope.g = false;
+				$interval.cancel($scope.interval);
+			};
+
+		}]);
+	</script>
+</body>
+</html>

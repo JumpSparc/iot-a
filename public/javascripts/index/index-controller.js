@@ -5,8 +5,12 @@ angular.module('SolarProject')
   //     "key" : "Power" ,
   //     "values" : []
   // }];
-  $scope.nav = 0;
   $scope.devices = [];
+  
+  $scope.nav = 0;
+  $scope.currentNav = function(index){
+    $scope.nav = index;
+  };
 
   // Get initial data from server
   $http.get('/fetch')
@@ -24,7 +28,7 @@ angular.module('SolarProject')
 
 
   // Chart options
-  $scope.options = {
+  $scope.lineOptions = {
     chart: {
         type: 'stackedAreaChart',
         height: 400,
@@ -42,17 +46,49 @@ angular.module('SolarProject')
         duration: 0,
         useInteractiveGuideline: true,
     //  yDomain: [0,15000],
-    xAxis: {
-    showMaxMin: false,
-    tickFormat: function(d) {
-              // return ''
-            return d3.time.format('%x')(new Date(d))
+        xAxis: {
+          showMaxMin: false,
+          rotateLabels: 10,
+          tickFormat: function(d) {            
+              return d3.time.format('%b %e %H:%M:%S')(new Date(d))
           }
         },
         yAxis: {
           tickFormat: function(d){
               return d3.format(',.2f')(d);
           }
+        }
+      }
+    };
+
+    $scope.barOptions = {
+      chart: {
+        type: 'historicalBarChart',
+        height: 400,
+        margin : {
+            top: 20,
+            right: 20,
+            bottom: 60,
+            left: 80
+        },
+        x: function(d){return d[0];},
+        y: function(d){return d[1];},
+        showValues: true,
+        valueFormat: function(d){
+            return d3.format(',.1f')(d);
+        },
+        transitionDuration: 500,
+        xAxis: {
+            tickFormat: function(d) {
+                return d3.time.format('%b %e %H:%M:%S')(new Date(d))
+            },
+            rotateLabels: 10,
+            showMaxMin: false
+        },
+        yAxis: {
+            tickFormat: function(d){
+                return d3.format(',.1f')(d);
+            }
         }
       }
     };

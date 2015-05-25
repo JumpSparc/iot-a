@@ -95,7 +95,10 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="device in devices" id="{{device._id}}">
-							<td>{{device.name | capitalize}}</td>
+							<td>
+								<p> {{device.name | capitalize}} </p>	
+								<p class="note">ID: {{device._id}}</p>
+							</td>
 							<td>{{device.type | capitalize}}</td>
 							<td> 
 									

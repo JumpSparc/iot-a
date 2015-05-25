@@ -26,3 +26,8 @@
 ul.device-nav > li{
 	width:100%;
 }
+
+p.note{
+	font-size: 11px;
+	color: #7C7C7C;
+}

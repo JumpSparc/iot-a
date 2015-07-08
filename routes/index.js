@@ -186,6 +186,26 @@ module.exports = function(router, io, passport) {
       failureFlash : true // allow flash messages
   }))
 
+ 	// =========================
+	// Edit user
+	// =========================
+	.get('/profile/:id', function(req, res) {
+		var user;
+		User.findOne({'_id' : req.params.id }, function(err, data) {
+		  user = data;
+    	res.render('profile', { message: req.flash('signupMessage'), user: user });
+		});
+
+    // render the page and pass in any flash data if it exists
+  })
+	.post('/profile', function(req, res, next){
+		User.update({"_id": req.body.id},{
+			password: User.passwordHash(req.body.password) 
+		}, function(err, device){});
+
+		res.redirect('/');
+	})
+
 	// =========================
 	// Login
 	// =========================
